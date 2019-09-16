@@ -1,7 +1,7 @@
 # Task Delivery
 ```diff
-- Please don’t fork/branch or create pull-request from the repository, 
-- just clone it and email your solution back to us when you’re done.
+- Please don’t fork/branch or create pull-request from the repository. 
+- Clone it and email your solution back to us when you’re done.
 ```
 
 # Task Description
