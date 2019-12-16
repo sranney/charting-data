@@ -13,7 +13,6 @@ io.on('connection', function (socket) {
   console.log('connect');
 
   var unsubscribe = randomNumber.subscribe(function (number) {
-    console.log(number);
 
     var data = {
       value: number,
