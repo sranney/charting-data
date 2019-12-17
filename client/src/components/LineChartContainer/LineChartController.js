@@ -19,24 +19,24 @@ const ControllerContainer = styled.div`
 
 const LineChartController = ({
     windowLengthState: [windowLength, setWindowLength=()=>{}],
-    maxThresholdState: [maxThreshold, setMaxThreshold=()=>{}],
-    minThresholdState: [minThreshold, setMinThreshold=()=>{}],
     chartYMaxState: [chartYMax, setChartYMax=()=>{}],
     chartYMinState: [chartYMin, setChartYMin=()=>{}],
     showAverageState: [showAverage, setShowAverage=()=>{}],
     showPercentile25State: [showPercentile25, setShowPercentile25=()=>{}],
     showPercentile50State: [showPercentile50, setShowPercentile50=()=>{}],
     showPercentile75State: [showPercentile75, setShowPercentile75=()=>{}],
+    showMaxThresholdState: [showMaxThreshold, setShowMaxThreshold=()=>{}],
+    showMinThresholdState: [showMinThreshold, setShowMinThreshold=()=>{}]
 }) => {
     const windowLengthRef = useRef();
-    const maxThresholdRef = useRef();
-    const minThresholdRef = useRef();
     const chartYMaxRef = useRef();
     const chartYMinRef = useRef();
     const showAverageRef = useRef();
     const showPercentile25Ref = useRef();
     const showPercentile50Ref = useRef();
     const showPercentile75Ref = useRef();
+    const showMinThresholdRef = useRef();
+    const showMaxThresholdRef = useRef();
 
     return (
         <ControllerContainer>
@@ -47,22 +47,6 @@ const LineChartController = ({
                 defaultValue={windowLength}
                 refProp={windowLengthRef}
                 setter={setWindowLength}
-            />
-            <ControllerInput
-                type='number'
-                label='Max Threshold'
-                name='maxThreshold'
-                defaultValue={maxThreshold}
-                refProp={maxThresholdRef}
-                setter={setMaxThreshold}
-            />
-            <ControllerInput
-                type='number'
-                label='Min Threshold'
-                name='minThreshold'
-                defaultValue={minThreshold}
-                refProp={minThresholdRef}
-                setter={setMinThreshold}
             />
             <ControllerInput
                 type='number'
@@ -79,7 +63,23 @@ const LineChartController = ({
                 defaultValue={chartYMin}
                 refProp={chartYMinRef}
                 setter={setChartYMin}
-            />  
+            />
+            <ControllerInput
+                type='checkbox'
+                label='Show Max Threshold'
+                name='showMaxThreshold'
+                defaultValue={showMaxThreshold}
+                refProp={showMaxThresholdRef}
+                setter={setShowMaxThreshold}
+            />
+            <ControllerInput
+                type='checkbox'
+                label='Show Min Threshold'
+                name='showMinThreshold'
+                defaultValue={showMinThreshold}
+                refProp={showMinThresholdRef}
+                setter={setShowMinThreshold}
+            />
             <ControllerInput
                 type='checkbox'
                 label='Show Average'

@@ -16,18 +16,26 @@ const CustomizedAxisTick = ({x,y,stroke,payload}) => {
     );
 };
 
+const CustomizedLabel=(data) => {
+    console.log('data', data);
+    return <text x={0} y={0} dy={16} textAnchor="end" fill="#666" transform="scale(2)">{data.payload.value}</text>;
+}
+
 const LineChartGraph = ({
     windowLength,
     maxThreshold,
     minThreshold,
     chartYMax,
     chartYMin,
+    showMaxThreshold,
+    showMinThreshold,
     showAverage,
     showPercentile25, 
     showPercentile50, 
     showPercentile75
 }) => {
     const [movingTimeSeries, setMovingTimeSeries] = useState([]);
+    const [xAxisInterval, setXAxisInterval] = useState(0);
 
     const observations = useContext(ObservationsContext);
 
@@ -37,6 +45,20 @@ const LineChartGraph = ({
         : observations    
     ),[windowLength,observations]);
 
+    useEffect(()=>setXAxisInterval(
+        (()=>{
+            if(windowLength > 90) {
+                return 3;
+            } else if(windowLength > 60) {
+                return 2;
+            } else if(windowLength > 30) {
+                return 1;
+            } else {
+                return 0;
+            }
+        })()
+    ),[windowLength]);
+
     const [average,percentile25,percentile50,percentile75] = useWindowStatistics(movingTimeSeries, showAverage, showPercentile25, showPercentile50, showPercentile75)
 
     return (
@@ -45,17 +67,17 @@ const LineChartGraph = ({
                 data={movingTimeSeries}
                 type='natural'
             >
-                <XAxis dataKey="time" height={100} tick={<CustomizedAxisTick/>} tickCount={15} interval={0}/>
+                <XAxis dataKey="time" height={100} tick={<CustomizedAxisTick/>} tickCount={15} interval={xAxisInterval}/>
                 <YAxis domain={[chartYMin, chartYMax]} tickCount={10}/>
                 <CartesianGrid strokeDasharray="3 3"/>
                 <Tooltip/>
                 <Legend/>
-                <ReferenceLine y={maxThreshold} label="Max Threshold" stroke="red" strokeDasharray="3 3" />
-                <ReferenceLine y={minThreshold} label="Min Threshold" stroke="red" strokeDasharray="3 3" />
-                {showAverage && <ReferenceLine y={average} label={`Mean: ${average}`} stroke="blue" strokeDasharray="3 3"/>}
-                {showPercentile25 && <ReferenceLine y={percentile25} label={`25th Percentile: ${percentile25}`} stroke="blue" strokeDasharray="3 3"/>}
-                {showPercentile50 && <ReferenceLine y={percentile50} label={`Median: ${percentile50}`} stroke="blue" strokeDasharray="3 3"/>}
-                {showPercentile75 && <ReferenceLine y={percentile75} label={`75th percentile: ${percentile75}`} stroke="blue" strokeDasharray="3 3"/>}
+                {showMaxThreshold && <ReferenceLine y={maxThreshold} stroke="#D64545" strokeWidth={3} />}
+                {showMinThreshold && <ReferenceLine y={minThreshold} stroke="#D64545" strokeWidth={3} />}
+                {showAverage && <ReferenceLine y={average} stroke="#044E54" strokeWidth={3} />}
+                {showPercentile25 && <ReferenceLine y={percentile25} stroke="#87EAF2" strokeWidth={3} />}
+                {showPercentile50 && <ReferenceLine y={percentile50} stroke="#38BEC9" strokeWidth={3} />}
+                {showPercentile75 && <ReferenceLine y={percentile75} stroke="#14919B" strokeWidth={3} />}
                 <Line isAnimationActive={false} dataKey='value' stroke='#0F609B' strokeWidth={6}/>
             </LineChart>
         </ResponsiveContainer>

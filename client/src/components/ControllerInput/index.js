@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const ControllerInput = ({label, name, setter, defaultValue, refProp, type}) => {
     function setterCoercion() {
@@ -17,7 +17,7 @@ const ControllerInput = ({label, name, setter, defaultValue, refProp, type}) => 
                 name={name}
                 defaultValue={defaultValue}
                 ref={refProp}
-                onChange={() => type === 'checkbox' && setter(setterCoercion())}
+                onChange={() => type === 'checkbox' && typeof defaultValue !== undefined && setter(setterCoercion())}
             />
             {type!=='checkbox' && (<button 
                     onClick={()=>refProp.current.value !== defaultValue && setter(setterCoercion())}

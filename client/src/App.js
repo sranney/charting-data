@@ -7,17 +7,20 @@ import {DateContainer} from './styles';
 //components
 import LineChartContainer from './components/LineChartContainer';
 import HistogramContainer from './components/HistogramContainer';
-import SocketController from './components/SocketController';
+import ThresholdController from './components/ThresholdController';
+import Meta from './components/Meta';
 
 //context api
 import ObservationsContext from './helpers/context/ObservationsContext';
 
 //hooks
-import {useUpdateObservations} from './AppHooks/useUpdateObservations';
+import useUpdateObservations from './AppHooks/useUpdateObservations';
+import useThresholdSetter from './AppHooks/useThresholdSetter';
 
 const App = () => {
     const [newData, setNewData] = useState();
     const [currentDate, observations] = useUpdateObservations(newData);
+    const [maxThreshold, setMaxThreshold, showMaxThreshold, minThreshold, setMinThreshold, showMinThreshold] = useThresholdSetter(newData);
 
     useEffect(() => {//set up socket connection
         const socket = io('http://localhost:3000');
@@ -28,9 +31,30 @@ const App = () => {
     return (
         <>
             <ObservationsContext.Provider value={observations}>
-                <DateContainer>Current Date Observed: {currentDate}</DateContainer>
-                <LineChartContainer/>
-                <HistogramContainer/>
+                <Meta 
+                    currentDate={currentDate} 
+                    numberOfObservations={observations.length}
+                />
+                <ThresholdController
+                    maxThreshold={maxThreshold}
+                    setMaxThreshold={setMaxThreshold}
+                    showMaxThreshold={showMaxThreshold}
+                    minThreshold={minThreshold}
+                    showMinThreshold={showMinThreshold}
+                    setMinThreshold={setMinThreshold}
+                />
+                <LineChartContainer 
+                    maxThreshold={maxThreshold} 
+                    minThreshold={minThreshold} 
+                    showMaxThreshold={showMaxThreshold} 
+                    showMinThreshold={showMinThreshold}
+                />
+                <HistogramContainer 
+                    maxThreshold={maxThreshold} 
+                    minThreshold={minThreshold} 
+                    showMaxThreshold={showMaxThreshold} 
+                    showMinThreshold={showMinThreshold}
+                />
             </ObservationsContext.Provider>
         </>
     );
